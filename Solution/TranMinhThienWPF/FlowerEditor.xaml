@@ -1,0 +1,113 @@
+﻿<Window x:Class="TranMinhThienWPF.FlowerEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:TranMinhThienWPF"
+        mc:Ignorable="d"
+        Title="Flower Editor" Height="750" Width="400"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Loaded="Awake"
+        Unloaded="FlowerEditor_OnUnloaded">
+    <Border BorderThickness="2">
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#C120CF" Offset="0" />
+                <GradientStop Color="#20FCF4" Offset="0.75" />
+                <GradientStop Color="#008B86" Offset="1" />
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                <GradientStop Color="#0096FF" Offset="0" />
+                <GradientStop Color="#C120CF" Offset="1" />
+            </LinearGradientBrush>
+        </Border.Background>
+
+        <StackPanel Width="300" VerticalAlignment="Center" Orientation="Vertical" HorizontalAlignment="Center">
+            <TextBlock x:Name="Title" Foreground="Azure" TextAlignment="Center" FontSize="30" FontWeight="Heavy" TextWrapping="Wrap">Flower Editor</TextBlock>
+            <TextBlock Foreground="Azure" TextAlignment="Center" FontSize="15" FontWeight="Light" TextWrapping="Wrap" Margin="0,10,0,0">Please fill the information (* is required)</TextBlock>
+            <TextBlock Foreground="Azure" TextAlignment="Left" FontSize="15" FontWeight="Medium" TextWrapping="Wrap"
+                       Margin="0,20,0,0">
+                Flower Name <Run Foreground="Red">*</Run>
+            </TextBlock>
+            <TextBox x:Name="FlowerName" TextAlignment="Left" FontSize="13" FontWeight="Medium" Foreground="Azure"
+                        Background="Transparent" CaretBrush="Linen" BorderBrush="#CA9CCA" BorderThickness="0,0,0,1"
+                        Margin="0,5,0,0">
+            </TextBox>
+            
+            <TextBlock  Foreground="Azure" TextAlignment="Left" FontSize="15" FontWeight="Medium" TextWrapping="Wrap"
+                       Margin="0,20,0,0">
+                Description
+                <TextBlock Foreground="Red">*</TextBlock>
+            </TextBlock>
+            <TextBox x:Name="FlowerDes" FontSize="13" FontWeight="Medium" Foreground="Azure"
+                     Background="Transparent" CaretBrush="Linen" BorderBrush="#CA9CCA" BorderThickness="0,0,0,1"
+                     Margin="0,5,0,0" TextWrapping="Wrap" MaxLength="200">
+            </TextBox>
+            
+            <TextBlock  Foreground="Azure" TextAlignment="Left" FontSize="15" FontWeight="Medium" TextWrapping="Wrap"
+                        Margin="0,20,0,0">
+                Unit Price
+                <TextBlock Foreground="Red">*</TextBlock>
+            </TextBlock>
+            <TextBox x:Name="FlowerPrice" FontSize="13" FontWeight="Medium" Foreground="Azure"
+                     Background="Transparent" CaretBrush="Linen" BorderBrush="#CA9CCA" BorderThickness="0,0,0,1"
+                     Margin="0,5,0,0">
+            </TextBox>
+            <TextBlock  Foreground="Azure" TextAlignment="Left" FontSize="15" FontWeight="Medium" TextWrapping="Wrap"
+                        Margin="0,20,0,0">
+                Unit in stock
+                <TextBlock Foreground="Red">*</TextBlock>
+            </TextBlock>
+            <TextBox x:Name="FlowerUnitsInStock" FontSize="13" FontWeight="Medium" Foreground="Azure"
+                     Background="Transparent" CaretBrush="Linen" BorderBrush="#CA9CCA" BorderThickness="0,0,0,1"
+                     Margin="0,5,0,0">
+            </TextBox>
+            <TextBlock  Foreground="Azure" TextAlignment="Left" FontSize="15" FontWeight="Medium" TextWrapping="Wrap"
+                        Margin="0,20,0,0">
+                Category
+                <TextBlock Foreground="Red">*</TextBlock>
+            </TextBlock>
+            <ComboBox x:Name="Category" FontSize="13" FontWeight="Medium" Foreground="Black"
+                     Background="Transparent" BorderBrush="#CA9CCA" BorderThickness="0,0,0,1"
+                     Margin="0,5,0,0">
+            </ComboBox>
+            <TextBlock  Foreground="Azure" TextAlignment="Left" FontSize="15" FontWeight="Medium" TextWrapping="Wrap"
+                        Margin="0,20,0,0">
+                Supplier
+            </TextBlock>
+            <ComboBox x:Name="Supplier" FontSize="13" FontWeight="Medium" Foreground="Black"
+                      Background="Transparent" BorderBrush="#CA9CCA" BorderThickness="0,0,0,1"
+                      Margin="0,5,0,0">
+            </ComboBox>
+            <Button Content="Submit" Foreground="Azure" FontWeight="Light"
+                    Margin="0,20,0,0" BorderThickness="0" Click="OnClickSubmit">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#C120CF"></Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="#C597C5"></Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" Value="#FFE7FF"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+
+                </Button.Style>
+
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Width="150" Height="40" Background="{TemplateBinding Background}" CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+    </Border>
+</Window>
