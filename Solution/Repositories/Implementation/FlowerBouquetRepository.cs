@@ -145,5 +145,17 @@ namespace Repositories.Implementation
 
             return null;
         }
+
+
+        public FlowerBouquet GetFlowerById(int? id)
+        {
+            return FlowerBouquetDAO.Instance.GetFlowerById(id);
+        }
+
+        public void UpdateFlower(FlowerBouquet newFlower)
+        {
+
+            FlowerBouquetDAO.Instance.UpdateFlower(newFlower);
+        }
     }
 }

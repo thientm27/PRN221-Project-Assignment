@@ -1,0 +1,65 @@
+﻿@page
+@model RazorPage.Pages.ManageFlower.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>FlowerBouquet</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="FlowerBouquet.FlowerBouquetId" />
+            <div class="form-group">
+                <label asp-for="FlowerBouquet.CategoryId" class="control-label"></label>
+                <select asp-for="FlowerBouquet.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <span asp-validation-for="FlowerBouquet.CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FlowerBouquet.FlowerBouquetName" class="control-label"></label>
+                <input asp-for="FlowerBouquet.FlowerBouquetName" class="form-control" />
+                <span asp-validation-for="FlowerBouquet.FlowerBouquetName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FlowerBouquet.Description" class="control-label"></label>
+                <input asp-for="FlowerBouquet.Description" class="form-control" />
+                <span asp-validation-for="FlowerBouquet.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FlowerBouquet.UnitPrice" class="control-label"></label>
+                <input asp-for="FlowerBouquet.UnitPrice" class="form-control" />
+                <span asp-validation-for="FlowerBouquet.UnitPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FlowerBouquet.UnitsInStock" class="control-label"></label>
+                <input asp-for="FlowerBouquet.UnitsInStock" class="form-control" />
+                <span asp-validation-for="FlowerBouquet.UnitsInStock" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FlowerBouquet.FlowerBouquetStatus" class="control-label"></label>
+                <input asp-for="FlowerBouquet.FlowerBouquetStatus" class="form-control" />
+                <span asp-validation-for="FlowerBouquet.FlowerBouquetStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FlowerBouquet.SupplierId" class="control-label"></label>
+                <select asp-for="FlowerBouquet.SupplierId" class="form-control" asp-items="ViewBag.SupplierId"></select>
+                <span asp-validation-for="FlowerBouquet.SupplierId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

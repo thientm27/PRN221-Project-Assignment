@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BussinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessObject
 {
@@ -40,7 +41,19 @@ namespace DataAccessObject
             _context.FlowerBouquets.Add(flower);
             _context.SaveChanges();
         }
-
+        public FlowerBouquet GetFlowerById(int ?id)
+        {
+            var listTmp = _context.FlowerBouquets.Where(id => id.FlowerBouquetStatus != 0).ToList();
+            if (listTmp.Count == 0)
+            {
+                return null;
+            }
+            else
+            {
+                return listTmp[0];
+            }
+    
+        }
         public void DeleteFlower(int id)
         {
             var flower = _context.FlowerBouquets.Where(c => c.FlowerBouquetId == id).ToList()[0];
@@ -58,11 +71,6 @@ namespace DataAccessObject
             }
         }
 
-        public FlowerBouquet GetFlowerById(int id)
-        {
-            var flower = _context.FlowerBouquets.Where(c => c.FlowerBouquetId == id).ToList()[0];
-            return flower;
-        }
         public List<FlowerBouquet> GetCustomerByName(string name)
         {
             return _context.FlowerBouquets.Where(cus => cus.FlowerBouquetName.ToUpper().Contains(name.ToUpper())).ToList();
@@ -74,7 +82,13 @@ namespace DataAccessObject
 
         public void UpdateFlower(FlowerBouquet flower)
         {
-            _context.FlowerBouquets.Update(flower);
+            var existingFlower = _context.FlowerBouquets.Find(flower.FlowerBouquetId);
+            if (existingFlower != null)
+            {
+                _context.Entry(existingFlower).State = EntityState.Detached;
+            }
+
+            _context.Update(flower);
             _context.SaveChanges();
         }
 
