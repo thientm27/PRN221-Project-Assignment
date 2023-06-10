@@ -36,7 +36,27 @@ namespace RazorPage.Pages.ManageCustomer
             {
                 return Page();
             }
-
+            var userByEmail = customerRepository.FindCustomer(1, Customer.Email);
+            bool flag = false;
+            if (userByEmail != null && userByEmail.Count > 0)
+            {
+                foreach (var obj in userByEmail)
+                {
+                    if (obj.Email.CompareTo(Customer.Email) == 0)
+                    {
+                        if (obj.CustomerId != Customer.CustomerId)
+                        {
+                            flag = true; // Have save email with other user
+                        }
+                    }
+                }
+            }
+            if (flag)
+            {
+                ModelState.AddModelError("Customer.Email", "Email Already Owned");
+                return Page();
+            }
+            
             customerRepository.AddNewCustomer(Customer);
 
             return RedirectToPage("./Index");

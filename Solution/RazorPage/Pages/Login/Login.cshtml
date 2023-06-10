@@ -9,7 +9,6 @@
     </div>
     <form method="post">
         <div class="card-body">
-            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Customer.Email" class="control-label"></label>
                 <input asp-for="Customer.Email" class="form-control"/>
@@ -28,6 +27,6 @@
                 <i class="bi bi-check-circle" style="color:white;"></i> Register
             </a>
         </div>
-
+        <div asp-validation-summary="All" class="text-danger"></div>
     </form>
 </div>

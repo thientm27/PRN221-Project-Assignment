@@ -101,12 +101,6 @@ namespace RazorPage.Pages.User
                         }
                     }
                 }
-              
-                // Check if email belongs to other people
-                if (userByEmail[0].CustomerId != Customer.CustomerId)
-                {
-                  
-                }
             }
 
             if (flag)

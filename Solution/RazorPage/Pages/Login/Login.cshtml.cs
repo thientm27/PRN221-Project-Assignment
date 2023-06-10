@@ -33,7 +33,8 @@ namespace RazorPage.Pages.Login
             // user
             if (customerLogin == null)
             {
-                return RedirectToPage("./Login");
+                ModelState.AddModelError(string.Empty, "User or password is incorrect");
+                return Page();
             }
             HttpContext.Session.SetObjectAsJson("user", customerLogin);
             if (customerLogin.CustomerId == -1) // admin
