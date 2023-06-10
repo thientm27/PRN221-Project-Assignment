@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using BussinessObject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,12 +8,14 @@ using Repositories;
 using System.Threading.Tasks;
 using RazorPage.ViewModels;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace RazorPage.Pages.User
 {
     public class UserProfileModel : PageModel
     {
         private readonly ICustomerRepository customerRepository = new CustomerRepository();
+        
         [BindProperty] public Customer Customer { get; set; }
 
         [BindProperty] public bool ChangePassword { get; set; }
@@ -57,6 +60,11 @@ namespace RazorPage.Pages.User
                 return Page();
             }
 
+            if (!ValidateInputs())
+            {
+                return Page();
+            }
+
             if (ChangePassword)
             {
                 var oldPass = customerRepository.GetCustomerById(Customer.CustomerId).Password;
@@ -80,14 +88,31 @@ namespace RazorPage.Pages.User
             }
 
             var userByEmail = customerRepository.FindCustomer(1, Customer.Email);
+            bool flag = false;
             if (userByEmail != null && userByEmail.Count > 0)
             {
+                foreach (var obj in userByEmail)
+                {
+                    if (obj.Email.CompareTo(Customer.Email) == 0)
+                    {
+                        if (obj.CustomerId != Customer.CustomerId)
+                        {
+                            flag = true; // Have save email with other user
+                        }
+                    }
+                }
+              
                 // Check if email belongs to other people
                 if (userByEmail[0].CustomerId != Customer.CustomerId)
                 {
-                    ModelState.AddModelError("Customer.Email", "Email Already Owned");
-                    return Page();
+                  
                 }
+            }
+
+            if (flag)
+            {
+                ModelState.AddModelError("Customer.Email", "Email Already Owned");
+                return Page();
             }
 
             try
@@ -109,7 +134,67 @@ namespace RazorPage.Pages.User
 
             return RedirectToPage("./ShopView");
         }
+        private bool ValidateInputs()
+        {
+            var isValid = true;
 
+            if (string.IsNullOrEmpty(Customer.Email))
+            {
+                ModelState.AddModelError("Customer.Email", "Email cannot null");
+                isValid = false;
+            }
+            else
+            {
+                // Regular expression pattern for email validation
+                string emailPattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+
+                if (!Regex.IsMatch(Customer.Email, emailPattern))
+                {
+                    ModelState.AddModelError("Customer.Email", "Invalid email address");
+                    return false;
+                }
+            }
+            
+            if (string.IsNullOrEmpty(Customer.CustomerName))
+            {
+                ModelState.AddModelError("Customer.CustomerName", "CustomerName cannot null");
+                isValid = false;
+            }
+
+            if (string.IsNullOrEmpty(Customer.City))
+            {
+                ModelState.AddModelError("Customer.City", "City cannot null");
+                isValid = false;
+            }
+
+            if (string.IsNullOrEmpty(Customer.Country))
+            {
+                ModelState.AddModelError("Customer.Country", "Country cannot null");
+                isValid = false;
+            }
+
+            if (ChangePassword)
+            {
+                if (string.IsNullOrEmpty(Password))
+                {
+                    ModelState.AddModelError("Password", "Password cannot null");
+                    isValid = false;
+                }
+                if (string.IsNullOrEmpty(OldPassword))
+                {
+                    ModelState.AddModelError("OldPassword", "OldPassword cannot null");
+                    isValid = false;
+                }
+                if (string.IsNullOrEmpty(ConfirmPassword))
+                {
+                    ModelState.AddModelError("ConfirmPassword", "ConfirmPassword cannot null");
+                    isValid = false;
+                }
+                
+            }
+            
+            return isValid;
+        }
         private bool CustomerExists(int id)
         {
             return customerRepository.GetCustomerById(id) != null;

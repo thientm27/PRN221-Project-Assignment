@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -31,9 +32,61 @@ namespace RazorPage.Pages.ManageCustomer
                 return Page();
             }
 
+            if (!ValidateInputs())
+            {
+                return Page();
+            }
+
             customerRepository.AddNewCustomer(Customer);
 
             return RedirectToPage("./Index");
+        }
+        
+        private bool ValidateInputs()
+        {
+            var isValid = true;
+
+            if (string.IsNullOrEmpty(Customer.Email))
+            {
+                ModelState.AddModelError("Customer.Email", "Email cannot null");
+                isValid = false;
+            }
+            else
+            {
+                // Regular expression pattern for email validation
+                string emailPattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+
+                if (!Regex.IsMatch(Customer.Email, emailPattern))
+                {
+                    ModelState.AddModelError("Customer.Email", "Invalid email address");
+                    return false;
+                }
+            }
+            
+            if (string.IsNullOrEmpty(Customer.CustomerName))
+            {
+                ModelState.AddModelError("Customer.CustomerName", "CustomerName cannot null");
+                isValid = false;
+            }
+
+            if (string.IsNullOrEmpty(Customer.City))
+            {
+                ModelState.AddModelError("Customer.City", "City cannot null");
+                isValid = false;
+            }
+
+            if (string.IsNullOrEmpty(Customer.Country))
+            {
+                ModelState.AddModelError("Customer.Country", "Country cannot null");
+                isValid = false;
+            }
+            if (string.IsNullOrEmpty(Customer.Password))
+            {
+                ModelState.AddModelError("Customer.Password", "Password cannot null");
+                isValid = false;
+            }
+            
+            return isValid;
         }
     }
 }
