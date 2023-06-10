@@ -1,0 +1,30 @@
+﻿@page
+@model RazorPage.Pages.Login.IndexModel
+@{
+    ViewData["Title"] = "Login";
+}
+<div class="card w-50" style="margin:auto">
+    <div class="card-header bg-info text-white" style="font-weight:bold;">
+        <i class="bi bi-person-circle"></i> Login
+    </div>
+    <form method="post">
+        <div class="card-body">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="mb-3">
+                <label class="form-label"> Email </label>
+                <input @*asp-for="InputLogin.Email"*@ type="text" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label"> Password </label>
+                <input@* asp-for="InputLogin.Password"*@ type="password" class="form-control" />
+            </div>
+           
+           
+        <div class="card-footer text-muted">
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle" style="color:white;"></i> Login  </button>
+        </div>
+            <div class="card-footer text-muted">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle" style="color:white;"></i> Register  </button>
+            </div>
+    </form>
+</div>

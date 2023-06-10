@@ -19,7 +19,7 @@ namespace RazorPage.Pages
 
         public IActionResult OnGet()
         {
-            return RedirectToPage("/ManageFlower/Index");
+            return RedirectToPage("/ManageCustomer/Index");
         }
     }
 }

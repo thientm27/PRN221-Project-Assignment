@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessObject
 {
@@ -52,12 +53,23 @@ namespace DataAccessObject
         
         public Customer GetCustomerById(int id)
         {
-            var customer = _context.Customers.Where(c => c.CustomerId == id).ToList()[0];
-            return customer;
+            var tmp = _context.Customers.Where(c => c.CustomerId == id).ToList();
+            if (tmp.Count > 0)
+            {
+                return tmp[0];
+            }
+           
+            return null;
         }
         public void UpdateCustomer(Customer customer)
         {
-            _context.Customers.Update(customer);
+            var existingCustomer = _context.Customers.Find(customer.CustomerId);
+            if (existingCustomer != null)
+            {
+                _context.Entry(existingCustomer).State = EntityState.Detached;
+            }
+
+            _context.Update(customer);
             _context.SaveChanges();
         }
         public bool CheckAdminLogin(string email, string pass)
