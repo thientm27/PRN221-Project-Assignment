@@ -39,7 +39,7 @@ namespace RazorPage.Pages.ManageFlower
                 return NotFound();
             }
               ViewData["CategoryId"] = new SelectList(categoryRepository.GetAllCategory(), "CategoryId", "CategoryName");
-              ViewData["SupplierId"] = new SelectList(supplierRepository.GetAllSupplier(), "SupplierId", "SupplierId");
+              ViewData["SupplierId"] = new SelectList(supplierRepository.GetAllSupplier(), "SupplierId", "SupplierName");
                return Page();
         }
 

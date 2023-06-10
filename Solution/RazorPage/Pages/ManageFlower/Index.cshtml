@@ -26,9 +26,6 @@
                 @Html.DisplayNameFor(model => model.FlowerBouquet[0].UnitsInStock)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FlowerBouquet[0].FlowerBouquetStatus)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.FlowerBouquet[0].Category)
             </th>
             <th>
@@ -53,13 +50,10 @@
                 @Html.DisplayFor(modelItem => item.UnitsInStock)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FlowerBouquetStatus)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Category.CategoryName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Supplier.SupplierId)
+                @Html.DisplayFor(modelItem => item.Supplier.SupplierName)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.FlowerBouquetId">Edit</a> |

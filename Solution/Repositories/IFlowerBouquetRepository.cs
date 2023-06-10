@@ -16,6 +16,7 @@ namespace Repositories
 
         public string CreateFlower(int categoryId, string flowerName, string description, string unitPrice,
             string unitsInStock, int? supplierId);
+        public void CreateFlower(FlowerBouquet newFlower);
 
         public List<FlowerBouquet> FindFlower(int findCase, string value);
     }

@@ -157,5 +157,11 @@ namespace Repositories.Implementation
 
             FlowerBouquetDAO.Instance.UpdateFlower(newFlower);
         }
+
+        public void CreateFlower(FlowerBouquet newFlower)
+        {
+            newFlower.FlowerBouquetStatus = 1;
+            FlowerBouquetDAO.Instance.AddFlower(newFlower);
+        }
     }
 }

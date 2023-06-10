@@ -6,22 +6,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BussinessObject.Models;
+using Repositories.Implementation;
+using Repositories;
 
 namespace RazorPage.Pages.ManageFlower
 {
     public class CreateModel : PageModel
     {
-        private readonly BussinessObject.Models.FUFlowerBouquetManagementContext _context;
-
-        public CreateModel(BussinessObject.Models.FUFlowerBouquetManagementContext context)
-        {
-            _context = context;
-        }
-
+        private readonly IFlowerBouquetRepository flowerBouquetRepository = new FlowerBouquetRepository();
+        private readonly ICategoryRepository categoryRepository = new CategoryRepository();
+        private readonly ISupplierRepository supplierRepository = new SupplierRepository();
         public IActionResult OnGet()
         {
-        ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName");
-        ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "SupplierId");
+      
+            ViewData["CategoryId"] = new SelectList(categoryRepository.GetAllCategory(), "CategoryId", "CategoryName");
+      
+            ViewData["SupplierId"] = new SelectList(supplierRepository.GetAllSupplier(), "SupplierId", "SupplierName");
             return Page();
         }
 
@@ -36,8 +36,8 @@ namespace RazorPage.Pages.ManageFlower
                 return Page();
             }
 
-            _context.FlowerBouquets.Add(FlowerBouquet);
-            await _context.SaveChangesAsync();
+            flowerBouquetRepository.CreateFlower(FlowerBouquet);
+
 
             return RedirectToPage("./Index");
         }

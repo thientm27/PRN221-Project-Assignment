@@ -6,17 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BussinessObject.Models;
+using Repositories.Implementation;
+using Repositories;
 
 namespace RazorPage.Pages.ManageFlower
 {
     public class DeleteModel : PageModel
     {
-        private readonly BussinessObject.Models.FUFlowerBouquetManagementContext _context;
-
-        public DeleteModel(BussinessObject.Models.FUFlowerBouquetManagementContext context)
-        {
-            _context = context;
-        }
+        private readonly IFlowerBouquetRepository flowerBouquetRepository = new FlowerBouquetRepository();
 
         [BindProperty]
         public FlowerBouquet FlowerBouquet { get; set; }
@@ -28,9 +25,7 @@ namespace RazorPage.Pages.ManageFlower
                 return NotFound();
             }
 
-            FlowerBouquet = await _context.FlowerBouquets
-                .Include(f => f.Category)
-                .Include(f => f.Supplier).FirstOrDefaultAsync(m => m.FlowerBouquetId == id);
+            FlowerBouquet = flowerBouquetRepository.GetFlowerById(id);
 
             if (FlowerBouquet == null)
             {
@@ -46,12 +41,11 @@ namespace RazorPage.Pages.ManageFlower
                 return NotFound();
             }
 
-            FlowerBouquet = await _context.FlowerBouquets.FindAsync(id);
+            FlowerBouquet = flowerBouquetRepository.GetFlowerById(id);
 
             if (FlowerBouquet != null)
             {
-                _context.FlowerBouquets.Remove(FlowerBouquet);
-                await _context.SaveChangesAsync();
+               flowerBouquetRepository.DeleteFlower(FlowerBouquet.FlowerBouquetId);
             }
 
             return RedirectToPage("./Index");
