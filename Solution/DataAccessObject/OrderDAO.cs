@@ -60,10 +60,31 @@ namespace DataAccessObject
             return _context.Orders.ToList();
         }
 
+        public Order GetOrderById(int id)
+        {
+            var order = _context.Orders.Where(c => c.OrderId == id).ToList();
+            if (order.Count == 0)
+            {
+                return null;
+            }
+            return order[0];
+        }
+
         public void DeleteOrder(int id)
         {
-            var customer = _context.Orders.Where(c => c.OrderId == id).ToList()[0];
-            _context.Orders.Remove(customer);
+            
+            var orderDetails = _context.OrderDetails.Where(o => o.OrderId == id).ToList();
+            // Not delete, return flower to stock
+            foreach (var orderDetail in orderDetails)
+            {
+                var flower = FlowerBouquetDAO.Instance.GetFlowerById(orderDetail.FlowerBouquetId);
+                flower.UnitsInStock += orderDetail.Quantity;
+                _context.FlowerBouquets.Update(flower);
+                _context.OrderDetails.Add(orderDetail);
+            }
+    
+            var order = _context.Orders.Where(o => o.OrderId == id).ToList()[0];
+            order.OrderStatus = "Cancel";
             _context.SaveChanges();
         }
     }

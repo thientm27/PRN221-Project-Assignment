@@ -1,0 +1,56 @@
+@page
+@model RazorPage.Pages.ManageOrder.CreateModel
+
+@{
+    Layout = "Shared/_AdminLayout";
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Order</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Order.OrderId" class="control-label"></label>
+                <input asp-for="Order.OrderId" class="form-control" />
+                <span asp-validation-for="Order.OrderId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.CustomerId" class="control-label"></label>
+                <select asp-for="Order.CustomerId" class ="form-control" asp-items="ViewBag.CustomerId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.OrderDate" class="control-label"></label>
+                <input asp-for="Order.OrderDate" class="form-control" />
+                <span asp-validation-for="Order.OrderDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.ShippedDate" class="control-label"></label>
+                <input asp-for="Order.ShippedDate" class="form-control" />
+                <span asp-validation-for="Order.ShippedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.Total" class="control-label"></label>
+                <input asp-for="Order.Total" class="form-control" />
+                <span asp-validation-for="Order.Total" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.OrderStatus" class="control-label"></label>
+                <input asp-for="Order.OrderStatus" class="form-control" />
+                <span asp-validation-for="Order.OrderStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+

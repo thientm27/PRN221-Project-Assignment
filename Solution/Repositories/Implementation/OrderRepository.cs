@@ -17,6 +17,11 @@ namespace Repositories.Implementation
             return OrderDAO.Instance.GetAllOrder();
         }
 
+        public Order GetOrderById(int id)
+        {
+            return OrderDAO.Instance.GetOrderById(id);
+        }
+
         public void DeleteOrder(int id)
         {
             OrderDAO.Instance.DeleteOrder(id);
