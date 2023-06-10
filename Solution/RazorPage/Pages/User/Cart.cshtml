@@ -7,7 +7,7 @@
 
 <form method="post" asp-page="cart" asp-page-handler="update">
     <div class="text-center">
-        <input type="submit" value="Update" class="btn btn-primary" />
+        <input type="submit" value="Update" class="btn btn-primary"/>
     </div>
     <table class="table">
         <thead>
@@ -21,7 +21,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Cart[0].Item.UnitPrice)
             </th>
-                <th>Quantity</th>
+            <th>Quantity</th>
             <th> PRICE </th>
             <th></th>
         </tr>
@@ -46,7 +46,7 @@
                     $@(item.Item.UnitPrice * item.Quantity)
                 </td>
                 <td>
-                        <a asp-page="cart" asp-page-handler="delete" asp-route-id="@item.Item.FlowerBouquetId"> Remove </a>
+                    <a asp-page="cart" asp-page-handler="delete" asp-route-id="@item.Item.FlowerBouquetId"> Remove </a>
                 </td>
             </tr>
         }
@@ -54,6 +54,21 @@
     </table>
     <div class="text-center">
         <h2>Total: $@Model.Total </h2>
-        <a asp-page="#" asp-page-handler="#"> Checkout </a>
     </div>
+</form>
+
+<form method="post" asp-page="cart" asp-page-handler="checkout">
+   <div class="form-group">
+       <label asp-for="@Model.ShipDate" class="control-label"></label>
+       @{
+           DateTime defaultDate = DateTime.Today;
+           DateTime currentDate = DateTime.Today;
+           DateTime maxDate = currentDate.AddDays(30);
+       }
+       <input asp-for="@Model.ShipDate" class="form-control" type="date" min="@currentDate.ToString("yyyy-MM-dd")" max="@maxDate.ToString("yyyy-MM-dd")" value="@defaultDate.ToString("yyyy-MM-dd")" />
+       <span asp-validation-for="@Model.ShipDate" class="text-danger"></span>
+   </div>
+
+    <input type="submit" value="CheckOut" class="btn btn-primary" style="margin: 0 auto"/>
+     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 </form>

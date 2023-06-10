@@ -13,11 +13,10 @@ namespace RazorPage.Pages.User
     public class UserProfileModel : PageModel
     {
         private readonly ICustomerRepository customerRepository = new CustomerRepository();
-        [BindProperty]
-        public Customer Customer { get; set; }
+        [BindProperty] public Customer Customer { get; set; }
 
-        [BindProperty]
-        public bool ChangePassword { get; set; }
+        [BindProperty] public bool ChangePassword { get; set; }
+
         [BindProperty]
         [DataType(DataType.Password)]
         public string OldPassword { get; set; }
@@ -34,16 +33,18 @@ namespace RazorPage.Pages.User
         public IActionResult OnGet()
         {
             var loginUser = HttpContext.Session.GetObjectFromJson<Customer>("user");
-           
+
             if (loginUser == null)
             {
                 return RedirectToPage("../Login/Login");
             }
+
             Customer = customerRepository.GetCustomerById(loginUser.CustomerId);
             if (Customer == null)
             {
                 return NotFound();
             }
+
             return Page();
         }
 
@@ -70,6 +71,7 @@ namespace RazorPage.Pages.User
                     ModelState.AddModelError("Password", "The password and confirmation password do not match.");
                     return Page();
                 }
+
                 Customer.Password = Password;
             }
             else
@@ -90,7 +92,6 @@ namespace RazorPage.Pages.User
 
             try
             {
-             
                 customerRepository.UpdateCustomer(Customer);
                 HttpContext.Session.SetObjectAsJson("user", Customer);
             }

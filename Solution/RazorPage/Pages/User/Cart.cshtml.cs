@@ -1,4 +1,5 @@
-﻿using BussinessObject.Models;
+﻿using System;
+using BussinessObject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using RazorPage.ViewModels;
@@ -13,12 +14,15 @@ namespace RazorPage.Pages.User
     {
         public List<CartItem> Cart { get; set; }
         public decimal Total { get; set; }
-        
+        [BindProperty]
+        public DateTime ShipDate { get; set; }
 
-        private readonly IFlowerBouquetRepository flowerBouquetRepository = new FlowerBouquetRepository();
+        private readonly IFlowerBouquetRepository _flowerBouquetRepository = new FlowerBouquetRepository();
+        private readonly IOrderRepository _orderRepository = new OrderRepository();
+        private readonly IOrderDetailRepository _orderDetailRepository = new OrderDetailRepository();
         public void OnGet()
         {
-            Cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
+            Cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("cart");
             if (Cart == null) // Not found old cart
             {
                 Cart = new List<CartItem>(); // create new
@@ -29,12 +33,11 @@ namespace RazorPage.Pages.User
 
         public IActionResult OnGetBuyNow(string id)
         {
-            Cart = new List<CartItem>(); // set up list product
             Cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("cart"); // try to get old cart from session
             if (Cart == null) // Not found old cart
             {
                 Cart = new List<CartItem>(); // create new
-                var flowerItem = flowerBouquetRepository.GetFlowerById(int.Parse(id));
+                var flowerItem = _flowerBouquetRepository.GetFlowerById(int.Parse(id));
                 Cart.Add(new CartItem
                 {
                     Item = flowerItem,
@@ -47,7 +50,7 @@ namespace RazorPage.Pages.User
                 int index = CheckExist(Cart, int.Parse(id)); // Check if already have item in cart
                 if (index == -1) // Not see? add new with quantity 1
                 {
-                    var flowerItem = flowerBouquetRepository.GetFlowerById(int.Parse(id));
+                    var flowerItem = _flowerBouquetRepository.GetFlowerById(int.Parse(id));
                     Cart.Add(new CartItem
                     {
                         Item = flowerItem,
@@ -78,13 +81,78 @@ namespace RazorPage.Pages.User
 
         public IActionResult OnGetDelete(string id)
         {
-            Cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
+            Cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("cart");
             int index = CheckExist(Cart, int.Parse(id));
             Cart.RemoveAt(index);
-            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", Cart);
+            HttpContext.Session.SetObjectAsJson("cart", Cart);
             return RedirectToPage("Cart");
         }
+        
+        public IActionResult OnPostCheckout()
+        {
 
+            Cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("cart");
+            if (Cart == null || Cart.Count == 0)
+            {
+                ModelState.AddModelError(String.Empty, "You do not have any item");
+                return Page();
+            }
+
+            var customer = HttpContext.Session.GetObjectFromJson<Customer>("user");
+
+            // CREATE ORDER
+            Total = Cart.Sum(i => i.Item.UnitPrice * i.Quantity);
+            var orderId = _orderRepository.AddOrder(customer.CustomerId, ShipDate, Total.ToString(),
+                "Shipping",
+                out var message);
+            // Check Error
+            if (!string.IsNullOrEmpty(message))
+            {
+                ModelState.AddModelError(String.Empty, message);
+                return Page();
+            }
+
+            // Create detail
+            List<OrderDetail> orderDetails = new List<OrderDetail>();
+            foreach (var orderDetail in Cart)
+            {
+                // Check Quantity
+                var currentFlower = _flowerBouquetRepository.GetFlowerById(orderDetail.Item.FlowerBouquetId);
+                if (currentFlower.UnitsInStock < orderDetail.Quantity)
+                {
+                    _orderRepository.DeleteOrder(orderId); // remove error order
+                    ModelState.AddModelError(String.Empty, currentFlower.FlowerBouquetName + " Only have "+ currentFlower.UnitsInStock+ " left!");
+                    return Page();
+                }
+                
+                orderDetails.Add(new OrderDetail()
+                {
+                    OrderId = orderId,
+                    FlowerBouquetId = orderDetail.Item.FlowerBouquetId,
+                    Discount = 0,
+                    Quantity = orderDetail.Quantity,
+                    UnitPrice = orderDetail.Item.UnitPrice,
+                });
+
+                
+            }
+
+            try
+            {
+                _orderDetailRepository.AddOrderDetails(orderDetails);
+            }
+            catch (Exception exception)
+            {
+                _orderRepository.DeleteOrder(orderId);
+                ModelState.AddModelError(String.Empty, "Error when create details");
+                return Page();
+            }
+            
+            Cart.Clear();
+            HttpContext.Session.SetObjectAsJson("cart", Cart);
+            return RedirectToPage("./OrderHistory");
+        }
+        
         private int CheckExist(List<CartItem> cart, int id)
         {
             for (var i = 0; i < cart.Count; i++)
