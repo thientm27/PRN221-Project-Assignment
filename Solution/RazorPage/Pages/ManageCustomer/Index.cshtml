@@ -2,15 +2,12 @@
 @model RazorPage.Pages.ManageCustomer.IndexModel
 
 @{
+    Layout = "Shared/_AdminLayout";
     ViewData["Title"] = "Index";
 }
 
 <h1>Customer Management</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>|
-    <a asp-page="../ManageFlower/Index">Flower Management</a> |
-</p>
 <table class="table">
     <thead>
         <tr>

@@ -44,11 +44,6 @@ namespace RazorPage.Pages.User
 
             return Page();
         }
-        public IActionResult OnPostLogOutAsync()
-        {
-            HttpContext.Session.Clear();
-            return RedirectToPage("../Login/Login");
-        }
 
     }
 }
