@@ -1,15 +1,13 @@
 ﻿@page
 @model RazorPage.Pages.User.ShopViewModel
 @{
+    Layout = "../Shared/_UserLayOut";
     ViewData["Title"] = "Shopping";
 }
 
 
 <h1>SHOPPING TIME</h1>
 
-<p>
-    <a asp-page="./Cart">View Cart</a> |  <a asp-page="./UserProfile">Edit Your Profile</a> |
-</p>
 <table class="table">
     <thead>
         <tr>

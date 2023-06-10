@@ -1,0 +1,54 @@
+﻿@page
+@model RazorPage.Pages.User.OrderDetailModel
+@{
+    Layout = "../Shared/_UserLayOut";
+    ViewData["Title"] = "OrderDetail";
+}
+
+<h1>OrderDetail</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDetail[0].UnitPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDetail[0].Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDetail[0].Discount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDetail[0].FlowerBouquet)
+            </th>
+            <th>
+                Total
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.OrderDetail) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Discount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FlowerBouquet.FlowerBouquetName)
+            </td>
+            <td>
+                $@(item.UnitPrice * item.Quantity)
+            </td>
+  
+        </tr>
+}
+    </tbody>
+</table>
+<div class="text-center">
+    <h2>Total: $@Model.Total </h2>
+</div>

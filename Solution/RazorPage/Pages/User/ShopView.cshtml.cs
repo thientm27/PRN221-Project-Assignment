@@ -5,6 +5,7 @@ using Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using RazorPage.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace RazorPage.Pages.User
 {
@@ -34,5 +35,11 @@ namespace RazorPage.Pages.User
                 }
             }
         }
+        public IActionResult OnPostLogOutAsync()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToPage("../Login/Login");
+        }
+
     }
 }

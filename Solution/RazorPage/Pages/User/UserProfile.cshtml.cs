@@ -28,7 +28,7 @@ namespace RazorPage.Pages.User
 
         [BindProperty]
         [DataType(DataType.Password)]
-               public string ConfirmPassword { get; set; }
+        public string ConfirmPassword { get; set; }
 
 
         public IActionResult OnGet()

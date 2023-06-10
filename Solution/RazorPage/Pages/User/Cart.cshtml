@@ -1,12 +1,10 @@
 ﻿@page
 @model RazorPage.Pages.User.CartModel
 @{
+    Layout = "../Shared/_UserLayOut";
 }
 <h1>YOUR CART</h1>
 
-<p>
-    <a asp-page="./ShopView">Continue Shopping</a>
-</p>
 <form method="post" asp-page="cart" asp-page-handler="update">
     <div class="text-center">
         <input type="submit" value="Update" class="btn btn-primary" />
