@@ -19,7 +19,7 @@ namespace RazorPage.Pages
 
         public IActionResult OnGet()
         {
-            return RedirectToPage("/ManageCustomer/Index");
+            return RedirectToPage("/Login/Login");
         }
     }
 }

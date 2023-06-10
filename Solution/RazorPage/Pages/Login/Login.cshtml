@@ -10,21 +10,24 @@
     <form method="post">
         <div class="card-body">
             <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="mb-3">
-                <label class="form-label"> Email </label>
-                <input @*asp-for="InputLogin.Email"*@ type="text" class="form-control" />
+            <div class="form-group">
+                <label asp-for="Customer.Email" class="control-label"></label>
+                <input asp-for="Customer.Email" class="form-control" />
+                <span asp-validation-for="Customer.Email" class="text-danger"></span>
             </div>
-            <div class="mb-3">
-                <label class="form-label"> Password </label>
-                <input@* asp-for="InputLogin.Password"*@ type="password" class="form-control" />
+            <div class="form-group">
+                <label asp-for="Customer.Password" class="control-label"></label>
+                <input asp-for="Customer.Password" class="form-control" />
+                <span asp-validation-for="Customer.Password" class="text-danger"></span>
             </div>
            
            
         <div class="card-footer text-muted">
-            <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle" style="color:white;"></i> Login  </button>
-        </div>
-            <div class="card-footer text-muted">
-                <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle" style="color:white;"></i> Register  </button>
+                <input method="post" type="submit" value="Login" class="btn btn-primary" />
+                <a asp-page="./Register">
+                    <i class="bi bi-check-circle" style="color:white;"></i> Register  
+                </a>
             </div>
+      
     </form>
 </div>

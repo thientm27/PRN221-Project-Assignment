@@ -29,7 +29,7 @@ namespace RazorPage.Pages.Login
 
             customerRepository.AddNewCustomer(Customer);
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Login");
         }
     }
 }
