@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "Repositorie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TranMinhThienWPF", "TranMinhThienWPF\TranMinhThienWPF.csproj", "{73B0E251-BA89-4394-A076-9B1F47EE35EB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RazorPage", "RazorPage\RazorPage.csproj", "{C4F7768F-85B1-486D-86C8-7E00D1C98895}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TranMinhThienRazorPages", "TranMinhThienRazorPages\TranMinhThienRazorPages.csproj", "{C4F7768F-85B1-486D-86C8-7E00D1C98895}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
