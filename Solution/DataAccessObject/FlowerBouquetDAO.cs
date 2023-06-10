@@ -43,7 +43,7 @@ namespace DataAccessObject
         }
         public FlowerBouquet GetFlowerById(int ?id)
         {
-            var listTmp = _context.FlowerBouquets.Where(id => id.FlowerBouquetStatus != 0).ToList();
+            var listTmp = _context.FlowerBouquets.Where(item => item.FlowerBouquetId == id).ToList();
             if (listTmp.Count == 0)
             {
                 return null;

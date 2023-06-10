@@ -23,7 +23,7 @@ namespace Repositories.Implementation
             CustomerDao.Instance.DeleteCustomer(idCustomer);
         }
 
-        public List<Customer> GetAllCustomer()
+        public List<Customer?> GetAllCustomer()
         {
             return CustomerDao.Instance.GetAllCustomer();
         }
@@ -34,7 +34,7 @@ namespace Repositories.Implementation
         }
         
 
-        public Customer Login(string email, string password)
+        public Customer? Login(string email, string password)
         {
             // Check for admin
             if (CustomerDao.Instance.CheckAdminLogin(email, password))
@@ -257,7 +257,7 @@ namespace Repositories.Implementation
             return "";
         }
 
-        public List<Customer> FindCustomer(int findCase, string value)
+        public List<Customer?> FindCustomer(int findCase, string value)
         {
             switch (findCase)
             {
@@ -279,7 +279,7 @@ namespace Repositories.Implementation
                 }
                 case 4:
                 {
-                    var newList = new List<Customer>();
+                    var newList = new List<Customer?>();
                     var customer = CustomerDao.Instance.GetCustomerById(int.Parse(value));
                     if (customer !=null)
                     {

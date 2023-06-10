@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Repositories.Implementation;
 using Repositories;
 using System.Threading.Tasks;
+using RazorPage.ViewModels;
 
 namespace RazorPage.Pages.Login
 {
@@ -16,15 +17,16 @@ namespace RazorPage.Pages.Login
             return Page();
         }
 
-        [BindProperty]
-        public Customer Customer { get; set; }
+        [BindProperty] public Customer Customer { get; set; }
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-           var customerLogin = customerRepository.Login(Customer.Email, Customer.Password);
+
+            var customerLogin = customerRepository.Login(Customer.Email, Customer.Password);
 
             // -1 admin
             // null not valid
@@ -33,15 +35,13 @@ namespace RazorPage.Pages.Login
             {
                 return RedirectToPage("./Login");
             }
-            else if (customerLogin.CustomerId == -1)
+            HttpContext.Session.SetObjectAsJson("user", customerLogin);
+            if (customerLogin.CustomerId == -1) // admin
             {
                 return RedirectToPage("../ManageFlower/index");
-            }
-            else
-            {
-                return RedirectToPage("../Managecustomer/index");
-            }
-           
+            } // customer
+
+            return RedirectToPage("../User/ShopView");
         }
     }
 }

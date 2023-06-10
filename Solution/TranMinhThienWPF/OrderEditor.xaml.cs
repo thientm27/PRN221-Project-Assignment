@@ -13,7 +13,7 @@ namespace TranMinhThienWPF
         private readonly bool _isUpdate;
         private Order? _updateOrder;
         private List<FlowerBouquet> _listFlowerBouquets = new();
-        private List<Customer> _listCustomer = new();
+        private List<Customer?> _listCustomer = new();
         private List<OrderDetail> _listOrderDetail = new();
         private ICustomerRepository _customerRepository = new CustomerRepository();
         private IFlowerBouquetRepository _flowerBouquetRepository = new FlowerBouquetRepository();

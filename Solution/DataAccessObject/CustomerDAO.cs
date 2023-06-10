@@ -30,7 +30,7 @@ namespace DataAccessObject
 
         readonly FUFlowerBouquetManagementContext _context = new FUFlowerBouquetManagementContext();
 
-        public List<Customer> GetAllCustomer()
+        public List<Customer?> GetAllCustomer()
         {
             return _context.Customers.ToList();
         }
@@ -92,19 +92,19 @@ namespace DataAccessObject
                 return false;
             }
         }
-        public List<Customer> GetCustomerByEmail(string email)
+        public List<Customer?> GetCustomerByEmail(string email)
         {
             return _context.Customers.Where(cus => cus.Email.ToUpper().Contains(email.ToUpper())).ToList();
         }
-        public List<Customer> GetCustomerByCity(string email)
+        public List<Customer?> GetCustomerByCity(string email)
         {
             return _context.Customers.Where(cus => cus.City.ToUpper().Contains(email.ToUpper())).ToList();
         }
-        public List<Customer> GetCustomerByCountry(string email)
+        public List<Customer?> GetCustomerByCountry(string email)
         {
             return _context.Customers.Where(cus => cus.Country.ToUpper().Contains(email.ToUpper())).ToList();
         }
-        public List<Customer> GetCustomerByName(string name)
+        public List<Customer?> GetCustomerByName(string name)
         {
             return _context.Customers.Where(cus => cus.CustomerName.ToUpper().Contains(name.ToUpper())).ToList();
         }

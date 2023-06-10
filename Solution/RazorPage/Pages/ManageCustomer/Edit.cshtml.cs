@@ -15,9 +15,6 @@ namespace RazorPage.Pages.ManageCustomer
     public class EditModel : PageModel
     {
         private readonly ICustomerRepository customerRepository = new CustomerRepository();
-
-
-
         [BindProperty]
         public Customer Customer { get; set; }
 

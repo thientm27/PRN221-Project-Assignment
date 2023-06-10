@@ -19,7 +19,7 @@ namespace TranMinhThienWPF
 
         // Customer
         private ICustomerRepository _customerRepository = new CustomerRepository();
-        private List<Customer> _listCustomer = new();
+        private List<Customer?> _listCustomer = new();
 
         // Flower
         private IFlowerBouquetRepository _flowerBouquetRepository = new FlowerBouquetRepository();
