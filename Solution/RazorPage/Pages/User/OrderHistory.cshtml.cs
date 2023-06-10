@@ -24,16 +24,17 @@ namespace RazorPage.Pages.User
         {
             var loginUser = HttpContext.Session.GetObjectFromJson<Customer>("user");
 
-            if (loginUser == null)
+            if (loginUser == null || loginUser.CustomerId == -1) // not login or admin
             {
                 return RedirectToPage("../Login/Login");
             }
-            var Customer = customerRepository.GetCustomerById(loginUser.CustomerId);
-            if (Customer == null)
+            
+            var customer = customerRepository.GetCustomerById(loginUser.CustomerId);
+            if (customer == null)
             {
                 return NotFound();
             }
-            Order = orderRepository.GetOrdersByCustomer(Customer.CustomerId);
+            Order = orderRepository.GetOrdersByCustomer(customer.CustomerId);
 
             return Page();
 

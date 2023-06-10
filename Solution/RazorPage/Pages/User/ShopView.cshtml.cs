@@ -17,8 +17,15 @@ namespace RazorPage.Pages.User
         public IList<FlowerBouquet> FlowerBouquet { get; set; }
        
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            var loginUser = HttpContext.Session.GetObjectFromJson<Customer>("user");
+
+            if (loginUser == null || loginUser.CustomerId == -1) // not login or admin
+            {
+                return RedirectToPage("../Login/Login");
+            }
+            
             FlowerBouquet = flowerBouquetRepository.GetAllFlower();
             foreach (var item in FlowerBouquet)
             {
@@ -34,6 +41,8 @@ namespace RazorPage.Pages.User
                     item.Category = categoryRepository.GetAllCategory().Where(o => o.CategoryId == item.CategoryId).ToList()[0];
                 }
             }
+
+            return Page();
         }
         public IActionResult OnPostLogOutAsync()
         {

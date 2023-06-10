@@ -20,8 +20,14 @@ namespace RazorPage.Pages.User
         private readonly IFlowerBouquetRepository _flowerBouquetRepository = new FlowerBouquetRepository();
         private readonly IOrderRepository _orderRepository = new OrderRepository();
         private readonly IOrderDetailRepository _orderDetailRepository = new OrderDetailRepository();
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            var loginUser = HttpContext.Session.GetObjectFromJson<Customer>("user");
+
+            if (loginUser == null || loginUser.CustomerId == -1) // not login or admin
+            {
+                return RedirectToPage("../Login/Login");
+            }
             Cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("cart");
             if (Cart == null) // Not found old cart
             {
@@ -29,6 +35,7 @@ namespace RazorPage.Pages.User
                
             }
             Total = Cart.Sum(i => i.Item.UnitPrice * i.Quantity);
+            return Page();
         }
 
         public IActionResult OnGetBuyNow(string id)
