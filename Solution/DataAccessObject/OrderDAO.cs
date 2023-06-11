@@ -61,6 +61,7 @@ namespace DataAccessObject
             return _context.Orders
                 .Include(f => f.Customer)
                 .ToList();
+
         }
 
         public Order GetOrderById(int id)
@@ -87,6 +88,7 @@ namespace DataAccessObject
                 var flower = FlowerBouquetDAO.Instance.GetFlowerById(orderDetail.FlowerBouquetId);
                 flower.UnitsInStock += orderDetail.Quantity;
                 _context.FlowerBouquets.Update(flower);
+                _context.SaveChanges();
             }
             order.OrderStatus = "Cancel";
            

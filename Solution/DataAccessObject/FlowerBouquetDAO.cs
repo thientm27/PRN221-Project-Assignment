@@ -33,6 +33,7 @@ namespace DataAccessObject
             return _context.FlowerBouquets
                 .Include(f => f.Category)
                 .Include(f => f.Supplier)
+                .Where(o => o.FlowerBouquetStatus == 1)
                 .ToList();
             // return _context.FlowerBouquets.Where(f => f.FlowerBouquetStatus != 0).ToList();
         }

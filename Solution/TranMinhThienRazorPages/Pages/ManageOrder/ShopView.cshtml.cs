@@ -16,8 +16,6 @@ namespace RazorPage.Pages.ManageOrder
         private readonly ISupplierRepository supplierRepository = new SupplierRepository();
         public IList<FlowerBouquet> FlowerBouquet { get; set; }
         
-        [BindProperty]
-        public int Quantity { get; set; }
        
 
         public IActionResult OnGet()

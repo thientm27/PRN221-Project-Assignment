@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BussinessObject.Models;
+using RazorPage.ViewModels;
 using Repositories;
 using Repositories.Implementation;
 
@@ -20,6 +21,7 @@ namespace RazorPage.Pages.ManageOrder
         public void  OnGet()
         {
             Order = _orderRepository.GetAllOrders();
+            HttpContext.Session.SetObjectAsJson("cart", null);
             // foreach (var obj in Order)
             // {
             //     if (obj.CustomerId != null)

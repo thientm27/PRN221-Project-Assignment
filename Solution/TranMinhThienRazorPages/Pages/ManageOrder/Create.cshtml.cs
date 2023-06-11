@@ -17,27 +17,39 @@ namespace RazorPage.Pages.ManageOrder
         private readonly IOrderRepository _orderRepository = new OrderRepository();
         private readonly IOrderDetailRepository _orderDetailRepository = new OrderDetailRepository();
         private readonly ICustomerRepository _customerRepository = new CustomerRepository();
-
+        [BindProperty] public Order Order { get; set; }
+        [BindProperty] public decimal Total { get; set; }
+        private List<CartItem> Cart { get; set; }
         public IActionResult OnGet()
         {
+            Cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("cart");
+            if (Cart == null)
+            {
+                return RedirectToPage("./Index");
+            }
+
+            Order = new Order();
+            Total = Cart.Sum(i => i.Item.UnitPrice * i.Quantity);
+            Order.Total = Total;
             ViewData["CustomerId"] = new SelectList(_customerRepository.GetAllCustomer(), "CustomerId", "CustomerName");
             return Page();
         }
 
-        [BindProperty] public Order Order { get; set; }
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
+        public IActionResult OnPost()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-
-            var cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("cart");
+            
+            Cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("cart");
+            Total = Cart.Sum(i => i.Item.UnitPrice * i.Quantity);
+            
             // CREATE ORDER
-            Order.Total = cart.Sum(i => i.Item.UnitPrice * i.Quantity);
-            var orderId = _orderRepository.AddOrder(Order.CustomerId, Order.ShippedDate, Order.Total.ToString(),
+            var orderId = _orderRepository.AddOrder(Order.CustomerId, Order.ShippedDate, Total.ToString(),
                 Order.OrderStatus,
                 out var message);
             
@@ -50,7 +62,7 @@ namespace RazorPage.Pages.ManageOrder
 
             // Create detail
             List<OrderDetail> orderDetails = new List<OrderDetail>();
-            foreach (var orderDetail in cart)
+            foreach (var orderDetail in Cart)
             {
                 orderDetails.Add(new OrderDetail()
                 {
@@ -72,8 +84,8 @@ namespace RazorPage.Pages.ManageOrder
                 ModelState.AddModelError(String.Empty, "Error when create details");
                 return Page();
             }
-            cart.Clear();
-            HttpContext.Session.SetObjectAsJson("cart", cart);
+            Cart.Clear();
+            HttpContext.Session.SetObjectAsJson("cart", Cart);
             return RedirectToPage("./Index");
         }
     }
