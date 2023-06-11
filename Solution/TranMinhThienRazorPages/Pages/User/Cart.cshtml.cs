@@ -107,6 +107,18 @@ namespace RazorPage.Pages.User
 
             var customer = HttpContext.Session.GetObjectFromJson<Customer>("user");
 
+            // CHECK QUANTITY
+            foreach (var orderDetail in Cart)
+            {
+                // Check Quantity
+                var currentFlower = _flowerBouquetRepository.GetFlowerById(orderDetail.Item.FlowerBouquetId);
+                if (currentFlower.UnitsInStock < orderDetail.Quantity)
+                {
+                    ModelState.AddModelError(String.Empty, currentFlower.FlowerBouquetName + " Only have "+ currentFlower.UnitsInStock+ " left!");
+                    return Page();
+                }
+            }
+            
             // CREATE ORDER
             Total = Cart.Sum(i => i.Item.UnitPrice * i.Quantity);
             var orderId = _orderRepository.AddOrder(customer.CustomerId, ShipDate, Total.ToString(),
@@ -123,15 +135,7 @@ namespace RazorPage.Pages.User
             List<OrderDetail> orderDetails = new List<OrderDetail>();
             foreach (var orderDetail in Cart)
             {
-                // Check Quantity
-                var currentFlower = _flowerBouquetRepository.GetFlowerById(orderDetail.Item.FlowerBouquetId);
-                if (currentFlower.UnitsInStock < orderDetail.Quantity)
-                {
-                    _orderRepository.DeleteOrder(orderId); // remove error order
-                    ModelState.AddModelError(String.Empty, currentFlower.FlowerBouquetName + " Only have "+ currentFlower.UnitsInStock+ " left!");
-                    return Page();
-                }
-                
+
                 orderDetails.Add(new OrderDetail()
                 {
                     OrderId = orderId,
