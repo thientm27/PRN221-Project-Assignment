@@ -47,8 +47,15 @@ namespace DataAccessObject
 
         public void Update(Order order)
         {
-            _context.Orders.Update(order);
-            _context.SaveChanges();
+            var existingOrder = _context.Orders.Find(order.OrderId);
+            if (existingOrder != null)
+            {
+                _context.Entry(existingOrder).State = EntityState.Detached;
+                existingOrder = order;
+                _context.Update(existingOrder);
+                _context.SaveChanges();
+            }
+
         }
 
         public List<Order> GetOrdersByCustomer(int customerId)
@@ -85,13 +92,20 @@ namespace DataAccessObject
             // Not delete, return flower to stock
             foreach (var orderDetail in orderDetails)
             {
+                
                 var flower = FlowerBouquetDAO.Instance.GetFlowerById(orderDetail.FlowerBouquetId);
-                flower.UnitsInStock += orderDetail.Quantity;
-                _context.FlowerBouquets.Update(flower);
-                _context.SaveChanges();
+                if (flower != null)
+                {
+                    flower.Category = null;
+                    flower.Supplier = null;
+                    flower.UnitsInStock += orderDetail.Quantity;
+                    _context.Entry(flower).State = EntityState.Detached;
+                    _context.FlowerBouquets.Update(flower);
+                    _context.SaveChanges();
+                }
             }
             order.OrderStatus = "Cancel";
-           
+
             _context.Orders.Update(order);
             _context.SaveChanges();
         }

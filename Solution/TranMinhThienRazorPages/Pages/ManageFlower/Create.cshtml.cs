@@ -35,10 +35,7 @@ namespace RazorPage.Pages.ManageFlower
             {
                 return Page();
             }
-
             flowerBouquetRepository.CreateFlower(FlowerBouquet);
-
-
             return RedirectToPage("./Index");
         }
     }

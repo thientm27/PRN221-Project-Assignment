@@ -7,6 +7,7 @@ namespace Repositories
     public interface ICustomerRepository
     {
         public void AddNewCustomer(Customer newCustomer);
+        public bool AddNewCustomer2(Customer newCustomer);
         public void UpdateCustomer(Customer newCustomer);
         public void DeleteCustomer(int idCustomer);
         public List<Customer?> GetAllCustomer();

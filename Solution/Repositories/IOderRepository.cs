@@ -11,9 +11,14 @@ namespace Repositories
         public Order GetOrderById(int id);
         public void DeleteOrder(int id);
         public int AddOrder(Order order);
-        public int AddOrder(int? customerId, DateTime? shippedDate, string total, string orderStatus, out string message);
-        
-        public int UpdateOrder(Order oldOrder,int ?customerId, DateTime? shippedDate, string total, string orderStatus,  out string message);
+
+        public int AddOrder(int? customerId, DateTime? shippedDate, string total, string orderStatus,
+            out string message);
+
+        public int UpdateOrder(Order oldOrder, int? customerId, DateTime? shippedDate, string total, string orderStatus,
+            out string message);
+
+        public void UpdateOrder(Order order);
 
         public List<Order> GetDataInRange(DateTime startTime, DateTime endTime, out string message);
     }

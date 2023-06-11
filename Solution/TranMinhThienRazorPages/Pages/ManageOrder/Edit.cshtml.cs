@@ -7,20 +7,18 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BussinessObject.Models;
+using Repositories;
+using Repositories.Implementation;
 
 namespace RazorPage.Pages.ManageOrder
 {
     public class EditModel : PageModel
     {
-        private readonly BussinessObject.Models.FUFlowerBouquetManagementContext _context;
+        private readonly IOrderRepository _orderRepository = new OrderRepository();
+        private readonly IOrderDetailRepository _orderDetailRepository = new OrderDetailRepository();
+        private readonly ICustomerRepository _customerRepository = new CustomerRepository();
 
-        public EditModel(BussinessObject.Models.FUFlowerBouquetManagementContext context)
-        {
-            _context = context;
-        }
-
-        [BindProperty]
-        public Order Order { get; set; }
+        [BindProperty] public Order Order { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,31 +27,29 @@ namespace RazorPage.Pages.ManageOrder
                 return NotFound();
             }
 
-            Order = await _context.Orders
-                .Include(o => o.Customer).FirstOrDefaultAsync(m => m.OrderId == id);
+            Order = _orderRepository.GetOrderById((int)id);
 
             if (Order == null)
             {
                 return NotFound();
             }
-           ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "City");
+
+            ViewData["CustomerId"] = new SelectList(_customerRepository.GetAllCustomer(), "CustomerId", "CustomerName");
             return Page();
         }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public IActionResult OnPost()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Attach(Order).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                _orderRepository.UpdateOrder(Order);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -72,7 +68,7 @@ namespace RazorPage.Pages.ManageOrder
 
         private bool OrderExists(int id)
         {
-            return _context.Orders.Any(e => e.OrderId == id);
+            return _orderRepository.GetAllOrders().Any(e => e.OrderId == id);
         }
     }
 }

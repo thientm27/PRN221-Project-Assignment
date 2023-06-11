@@ -14,7 +14,6 @@ namespace Repositories.Implementation
 
         public List<Order> GetAllOrders()
         {
-            
             return OrderDAO.Instance.GetAllOrder();
         }
 
@@ -109,6 +108,12 @@ namespace Repositories.Implementation
             return orderUpdate.OrderId;
         }
 
+        public void UpdateOrder(Order order)
+        {
+            OrderDAO.Instance.Update(order);
+
+        }
+
         public List<Order> GetDataInRange(DateTime startTime, DateTime endTime, out string message)
         {
             message = "";
@@ -118,6 +123,7 @@ namespace Repositories.Implementation
                 message = "Please input date time";
                 return listResult;
             }
+
             if (startTime > endTime)
             {
                 message = "Start Time must before end time";

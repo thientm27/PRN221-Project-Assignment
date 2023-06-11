@@ -111,7 +111,11 @@ namespace RazorPage.Pages.User
 
             try
             {
-                customerRepository.UpdateCustomer(Customer);
+                if (!customerRepository.AddNewCustomer2(Customer))
+                {
+                    ModelState.AddModelError("Customer.Email", "EMAIL NO VALID");
+                    return Page();
+                }
                 HttpContext.Session.SetObjectAsJson("user", Customer);
             }
             catch (DbUpdateConcurrencyException)

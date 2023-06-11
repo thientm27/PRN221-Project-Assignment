@@ -13,6 +13,11 @@ namespace Repositories.Implementation
             CustomerDao.Instance.AddCustomer(newCustomer);
         }
 
+        public bool AddNewCustomer2(Customer newCustomer)
+        {
+             return   CustomerDao.Instance.AddCustomer2(newCustomer);
+        }
+
         public void UpdateCustomer(Customer newCustomer)
         {
             CustomerDao.Instance.UpdateCustomer(newCustomer);
@@ -32,7 +37,7 @@ namespace Repositories.Implementation
         {
             return CustomerDao.Instance.GetCustomerById(id);
         }
-        
+
 
         public Customer? Login(string email, string password)
         {
@@ -281,11 +286,11 @@ namespace Repositories.Implementation
                 {
                     var newList = new List<Customer?>();
                     var customer = CustomerDao.Instance.GetCustomerById(int.Parse(value));
-                    if (customer !=null)
+                    if (customer != null)
                     {
                         newList.Add(customer);
                     }
-              
+
                     return newList;
                 }
             }

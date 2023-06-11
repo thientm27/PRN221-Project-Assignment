@@ -52,14 +52,19 @@ namespace RazorPage.Pages.Login
                     }
                 }
             }
-
+            
+            
             if (flag)
             {
                 ModelState.AddModelError("Customer.Email", "Email Already Owned");
                 return Page();
             }
-            
-            customerRepository.AddNewCustomer(Customer);
+
+            if (!customerRepository.AddNewCustomer2(Customer))
+            {
+                ModelState.AddModelError("Customer.Email", "EMAIL NO VALID");
+                return Page();
+            }
 
             return RedirectToPage("./Login");
         }
@@ -102,8 +107,7 @@ namespace RazorPage.Pages.Login
                 ModelState.AddModelError("Customer.Country", "Country cannot null");
                 isValid = false;
             }
-
-
+            
             if (string.IsNullOrEmpty(Customer.Password))
             {
                 ModelState.AddModelError("Password", "Password cannot null");
@@ -123,8 +127,7 @@ namespace RazorPage.Pages.Login
                     isValid = false;
                 }
             }
-
-
+            
             return isValid;
         }
     }
