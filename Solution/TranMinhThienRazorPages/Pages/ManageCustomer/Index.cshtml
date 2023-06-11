@@ -10,6 +10,15 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+
+<form method="post" asp-page="index" asp-page-handler="search" >
+    <div class="form-group">
+        <label for="searchString">Search:</label>
+        <input asp-for="SearchValue"  class="form-control" />
+    </div>
+    <button type="submit" value="Search" class="btn btn-primary" style="margin: 0 auto">Search</button>
+</form>
+
 <table class="table">
     <thead>
         <tr>
