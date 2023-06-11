@@ -23,6 +23,11 @@ namespace Repositories.Implementation
             CustomerDao.Instance.UpdateCustomer(newCustomer);
         }
 
+        public bool UpdateCustomer2(Customer newCustomer)
+        {
+            return CustomerDao.Instance.UpdateCustomer2(newCustomer);
+        }
+
         public void DeleteCustomer(int idCustomer)
         {
             CustomerDao.Instance.DeleteCustomer(idCustomer);

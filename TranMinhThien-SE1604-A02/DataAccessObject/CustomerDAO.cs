@@ -99,7 +99,34 @@ namespace DataAccessObject
             _context.Update(customer);
             _context.SaveChanges();
         }
+        public bool UpdateCustomer2(Customer customer)
+        {
+            using (StreamReader r = new StreamReader("appsettings.json"))
+            {
+                string json = r.ReadToEnd();
+                IConfiguration config = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json", true, true)
+                    .Build();
+                string name = config["account:defaultAccount:Email"];
 
+                if (customer.Email.ToUpper().Equals(name.ToUpper()) )
+                {
+                    return false; // not valid email
+                }
+            }
+
+            
+            var existingCustomer = _context.Customers.Find(customer.CustomerId);
+            if (existingCustomer != null)
+            {
+                _context.Entry(existingCustomer).State = EntityState.Detached;
+            }
+
+            _context.Update(customer);
+            _context.SaveChanges();
+            return true;
+        }
         public bool CheckAdminLogin(string email, string pass)
         {
             using (StreamReader r = new StreamReader("appsettings.json"))

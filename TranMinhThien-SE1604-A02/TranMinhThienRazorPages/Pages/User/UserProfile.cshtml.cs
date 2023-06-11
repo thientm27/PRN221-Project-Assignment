@@ -93,11 +93,11 @@ namespace RazorPage.Pages.User
             {
                 foreach (var obj in userByEmail)
                 {
-                    if (obj.Email.CompareTo(Customer.Email) == 0)
+                    if (obj.Email.ToUpper().Trim().CompareTo(Customer.Email.ToUpper().Trim()) == 0) // same email
                     {
-                        if (obj.CustomerId != Customer.CustomerId)
+                        if (obj.CustomerId != Customer.CustomerId) // not same id
                         {
-                            flag = true; // Have save email with other user
+                            flag = true; // Have save email with other user // skip
                         }
                     }
                 }
@@ -111,7 +111,7 @@ namespace RazorPage.Pages.User
 
             try
             {
-                if (!customerRepository.AddNewCustomer2(Customer))
+                if (!customerRepository.UpdateCustomer2(Customer))
                 {
                     ModelState.AddModelError("Customer.Email", "EMAIL NO VALID");
                     return Page();
