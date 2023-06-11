@@ -18,7 +18,8 @@ namespace RazorPage.Pages.ManageFlower
         private readonly IFlowerBouquetRepository flowerBouquetRepository = new FlowerBouquetRepository();
         private readonly ICategoryRepository categoryRepository = new CategoryRepository();
         private readonly ISupplierRepository supplierRepository = new SupplierRepository();
-        public IList<FlowerBouquet> FlowerBouquet { get;set; }
+        public IList<FlowerBouquet> FlowerBouquet { get; set; }
+        [BindProperty] public string SearchValue { get; set; }
 
         public IActionResult OnGet()
         {
@@ -28,7 +29,7 @@ namespace RazorPage.Pages.ManageFlower
             {
                 return RedirectToPage("../Login/Login");
             }
-            
+
             FlowerBouquet = flowerBouquetRepository.GetAllFlower();
             // foreach (var item in FlowerBouquet)
             // {
@@ -46,6 +47,24 @@ namespace RazorPage.Pages.ManageFlower
             //
             //    
             // }
+            return Page();
+        }
+
+        public IActionResult OnPostSearch()
+        {
+            if (string.IsNullOrEmpty(SearchValue))
+            {
+                FlowerBouquet = flowerBouquetRepository.GetAllFlower();
+                return Page();
+            }
+
+            var search = SearchValue.ToUpper().Trim();
+            FlowerBouquet = flowerBouquetRepository.GetAllFlower()
+                .Where(O => O.FlowerBouquetName.ToUpper().Trim().Contains(search)
+                            || O.Supplier.SupplierName.ToUpper().Trim().Contains(search)
+                            || O.Supplier.SupplierName.ToUpper().Trim().Contains(search)
+                            || O.Description.ToUpper().Trim().Contains(search)
+                ).ToList();
             return Page();
         }
     }

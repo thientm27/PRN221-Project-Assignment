@@ -1,23 +1,32 @@
 @page
-@model RazorPage.Pages.ManageOrder.IndexModel
+@model RazorPage.Pages.Report.IndexModel
 
 @{
     Layout = "Shared/_AdminLayout";
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Report</h1>
 
-<p>
-    <a asp-page="ShopView">Create New</a>
-</p>
-<form method="post" asp-page="index" asp-page-handler="search" >
-    <div class="form-group">
-        <label for="searchString">Search:</label>
-        <input asp-for="SearchValue"  class="form-control" />
-    </div>
+<form method="post" asp-page="index" asp-page-handler="search">
+    <label class="control-label">START DAY</label>
+    @{
+        DateTime defaultDate = DateTime.Today;
+        DateTime currentDate = DateTime.Today;
+    }
+    <input asp-for="@Model.startDay" class="form-control" type="date" max="@currentDate.ToString("yyyy-MM-dd")" value="@defaultDate.ToString("yyyy-MM-dd")"/>
+    <span asp-validation-for="startDay" class="text-danger"></span>
+
+    <hr/>
+    <label class="control-label">END DAY</label>
+    <input asp-for="@Model.endDay" class="form-control" type="date" value="@defaultDate.ToString("yyyy-MM-dd")"/>
+    <span asp-validation-for="endDay" class="text-danger"></span>
+    <hr/>
     <button type="submit" value="Search" class="btn btn-primary" style="margin: 0 auto">Search</button>
 </form>
+
+<h5> Total: @Model.Total </h5>
+
 <table class="table">
     <thead>
     <tr>
@@ -36,7 +45,6 @@
         <th>
             @Html.DisplayNameFor(model => model.Order[0].Customer)
         </th>
-        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -57,11 +65,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Customer.CustomerName)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.OrderId">Edit</a> |
-                <a asp-page="./OrderDetail" asp-route-id="@item.OrderId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.OrderId">Delete</a>
             </td>
         </tr>
     }

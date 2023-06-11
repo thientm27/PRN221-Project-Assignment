@@ -17,7 +17,7 @@ namespace RazorPage.Pages.ManageOrder
         private readonly IOrderRepository _orderRepository = new OrderRepository();
         private readonly ICustomerRepository _customerRepository = new CustomerRepository();
         public IList<Order> Order { get;set; }
-
+        [BindProperty] public string SearchValue { get; set; }
         public IActionResult  OnGet()
         {
             var loginUser = HttpContext.Session.GetObjectFromJson<Customer>("user");
@@ -37,6 +37,23 @@ namespace RazorPage.Pages.ManageOrder
             //     }
             // }
 
+            return Page();
+        }
+        
+        public IActionResult OnPostSearch()
+        {
+            if (string.IsNullOrEmpty(SearchValue))
+            {
+                 Order = _orderRepository.GetAllOrders();
+                 return Page();
+            }
+
+            var search = SearchValue.ToUpper().Trim();
+            Order = _orderRepository.GetAllOrders()
+                .Where(O => O.Customer.CustomerName.ToUpper().Trim().Contains(search)
+                            || O.OrderStatus.ToUpper().Trim().Contains(search)
+
+                ).ToList();
             return Page();
         }
     }
