@@ -18,8 +18,15 @@ namespace RazorPage.Pages.ManageOrder
         private readonly ICustomerRepository _customerRepository = new CustomerRepository();
         public IList<Order> Order { get;set; }
 
-        public void  OnGet()
+        public IActionResult  OnGet()
         {
+            var loginUser = HttpContext.Session.GetObjectFromJson<Customer>("user");
+
+            if (loginUser == null || loginUser.CustomerId != -1) // not login or not admin
+            {
+                return RedirectToPage("../Login/Login");
+            }
+            
             Order = _orderRepository.GetAllOrders();
             HttpContext.Session.SetObjectAsJson("cart", null);
             // foreach (var obj in Order)
@@ -29,6 +36,8 @@ namespace RazorPage.Pages.ManageOrder
             //         obj.Customer = _customerRepository.GetCustomerById((int)obj.CustomerId);
             //     }
             // }
+
+            return Page();
         }
     }
 }

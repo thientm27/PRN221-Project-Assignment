@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BussinessObject.Models;
+using RazorPage.ViewModels;
 using Repositories;
 using Repositories.Implementation;
 
@@ -19,9 +20,16 @@ namespace RazorPage.Pages.ManageCustomer
 
         public IList<Customer> Customer { get;set; }
 
-        public async Task OnGetAsync()
+        public  IActionResult OnGet()
         {
+            var loginUser = HttpContext.Session.GetObjectFromJson<Customer>("user");
+
+            if (loginUser == null || loginUser.CustomerId != -1) // not login or not admin
+            {
+                return RedirectToPage("../Login/Login");
+            }
             Customer = customerRepository.GetAllCustomer();
+            return Page();
         }
     }
 }

@@ -9,6 +9,7 @@ using BussinessObject.Models;
 using Repositories;
 using Repositories.Implementation;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using RazorPage.ViewModels;
 
 namespace RazorPage.Pages.ManageFlower
 {
@@ -19,8 +20,15 @@ namespace RazorPage.Pages.ManageFlower
         private readonly ISupplierRepository supplierRepository = new SupplierRepository();
         public IList<FlowerBouquet> FlowerBouquet { get;set; }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            var loginUser = HttpContext.Session.GetObjectFromJson<Customer>("user");
+
+            if (loginUser == null || loginUser.CustomerId != -1) // not login or not admin
+            {
+                return RedirectToPage("../Login/Login");
+            }
+            
             FlowerBouquet = flowerBouquetRepository.GetAllFlower();
             // foreach (var item in FlowerBouquet)
             // {
@@ -38,7 +46,7 @@ namespace RazorPage.Pages.ManageFlower
             //
             //    
             // }
-
+            return Page();
         }
     }
 }

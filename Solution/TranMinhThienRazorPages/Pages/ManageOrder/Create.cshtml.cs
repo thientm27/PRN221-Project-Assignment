@@ -22,6 +22,13 @@ namespace RazorPage.Pages.ManageOrder
         private List<CartItem> Cart { get; set; }
         public IActionResult OnGet()
         {
+            var loginUser = HttpContext.Session.GetObjectFromJson<Customer>("user");
+
+            if (loginUser == null || loginUser.CustomerId != -1) // not login or not admin
+            {
+                return RedirectToPage("../Login/Login");
+            }
+            
             Cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("cart");
             if (Cart == null)
             {

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BussinessObject.Models;
+using RazorPage.ViewModels;
 using Repositories.Implementation;
 using Repositories;
 
@@ -26,7 +27,12 @@ namespace RazorPage.Pages.ManageCustomer
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
-        {
+        { var loginUser = HttpContext.Session.GetObjectFromJson<Customer>("user");
+
+            if (loginUser == null || loginUser.CustomerId != -1) // not login or not admin
+            {
+                return RedirectToPage("../Login/Login");
+            }
             if (!ModelState.IsValid)
             {
                 return Page();

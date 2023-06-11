@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BussinessObject.Models;
+using RazorPage.ViewModels;
 using Repositories.Implementation;
 using Repositories;
 
@@ -23,6 +24,13 @@ namespace RazorPage.Pages.ManageFlower
 
         public IActionResult OnGet(int? id)
         {
+            var loginUser = HttpContext.Session.GetObjectFromJson<Customer>("user");
+
+            if (loginUser == null || loginUser.CustomerId != -1) // not login or not admin
+            {
+                return RedirectToPage("../Login/Login");
+            }
+            
             if (id == null)
             {
                 return NotFound();

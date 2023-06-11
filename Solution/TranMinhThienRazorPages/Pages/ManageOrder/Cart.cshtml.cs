@@ -22,12 +22,14 @@ namespace RazorPage.Pages.ManageOrder
         private readonly IOrderDetailRepository _orderDetailRepository = new OrderDetailRepository();
         public IActionResult OnGet()
         {
+            
             var loginUser = HttpContext.Session.GetObjectFromJson<Customer>("user");
 
-            if (loginUser == null || loginUser.CustomerId != -1) // not login or not an admin
+            if (loginUser == null || loginUser.CustomerId != -1) // not login or not admin
             {
                 return RedirectToPage("../Login/Login");
             }
+            
             Cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>("cart");
             if (Cart == null) // Not found old cart
             {

@@ -23,8 +23,6 @@ namespace RazorPage.Pages.User
 
         public IActionResult OnGet(string id)
         {
-
-
             var loginUser = HttpContext.Session.GetObjectFromJson<Customer>("user");
 
             if (loginUser == null || loginUser.CustomerId == -1) // not login or admin
