@@ -14,6 +14,7 @@ namespace Repositories.Implementation
 
         public List<Order> GetAllOrders()
         {
+            
             return OrderDAO.Instance.GetAllOrder();
         }
 

@@ -1,0 +1,63 @@
+﻿@page
+@model RazorPage.Pages.ManageOrder.ShopViewModel
+@{
+    Layout = "Shared/_AdminLayout";
+    ViewData["Title"] = "Flower";
+}
+
+
+<h1>Flower List</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FlowerBouquet[0].FlowerBouquetName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FlowerBouquet[0].Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FlowerBouquet[0].UnitPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FlowerBouquet[0].UnitsInStock)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FlowerBouquet[0].Category)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FlowerBouquet[0].Supplier)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.FlowerBouquet)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FlowerBouquetName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitsInStock)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Supplier.SupplierName)
+            </td>
+            <td>
+                <a asp-page="./Cart" asp-page-handler="buynow" asp-route-id="@item.FlowerBouquetId" >Add</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BussinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessObject
 {
@@ -57,7 +58,9 @@ namespace DataAccessObject
 
         public List<Order> GetAllOrder()
         {
-            return _context.Orders.ToList();
+            return _context.Orders
+                .Include(f => f.Customer)
+                .ToList();
         }
 
         public Order GetOrderById(int id)
@@ -72,7 +75,11 @@ namespace DataAccessObject
 
         public void DeleteOrder(int id)
         {
-            
+            var order = _context.Orders.Where(o => o.OrderId == id).ToList()[0];
+            if (order.OrderStatus.ToUpper().Trim().Equals("CANCEL") || order.OrderStatus.Trim().ToUpper().Equals("DONE"))
+            {
+                return;
+            }
             var orderDetails = _context.OrderDetails.Where(o => o.OrderId == id).ToList();
             // Not delete, return flower to stock
             foreach (var orderDetail in orderDetails)
@@ -80,11 +87,10 @@ namespace DataAccessObject
                 var flower = FlowerBouquetDAO.Instance.GetFlowerById(orderDetail.FlowerBouquetId);
                 flower.UnitsInStock += orderDetail.Quantity;
                 _context.FlowerBouquets.Update(flower);
-                _context.OrderDetails.Add(orderDetail);
             }
-    
-            var order = _context.Orders.Where(o => o.OrderId == id).ToList()[0];
             order.OrderStatus = "Cancel";
+           
+            _context.Orders.Update(order);
             _context.SaveChanges();
         }
     }

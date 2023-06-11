@@ -9,31 +9,32 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="ShopView">Create New</a>
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Order[0].OrderDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Order[0].ShippedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Order[0].Total)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Order[0].OrderStatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Order[0].Customer)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Order[0].OrderDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Order[0].ShippedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Order[0].Total)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Order[0].OrderStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Order[0].Customer)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Order) {
+    @foreach (var item in Model.Order)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.OrderDate)
@@ -56,6 +57,6 @@
                 <a asp-page="./Delete" asp-route-id="@item.OrderId">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

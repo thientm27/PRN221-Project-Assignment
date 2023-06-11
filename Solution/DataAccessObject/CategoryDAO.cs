@@ -27,6 +27,7 @@ namespace DataAccessObject
         
         public List<Category> GetAllCategory()
         {
+
             return _context.Categories.ToList();
         } 
     }

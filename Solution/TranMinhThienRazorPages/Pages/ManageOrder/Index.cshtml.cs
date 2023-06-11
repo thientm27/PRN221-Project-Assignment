@@ -20,14 +20,13 @@ namespace RazorPage.Pages.ManageOrder
         public void  OnGet()
         {
             Order = _orderRepository.GetAllOrders();
-            foreach (var obj in Order)
-            {
-                if (obj.CustomerId != null)
-                {
-                    obj.Customer = _customerRepository.GetCustomerById((int)obj.CustomerId);
-                }
-       
-            }
+            // foreach (var obj in Order)
+            // {
+            //     if (obj.CustomerId != null)
+            //     {
+            //         obj.Customer = _customerRepository.GetCustomerById((int)obj.CustomerId);
+            //     }
+            // }
         }
     }
 }

@@ -18,7 +18,7 @@ namespace RazorPage.Pages.ManageFlower
         [BindProperty]
         public FlowerBouquet FlowerBouquet { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public IActionResult OnGetAsync(int? id)
         {
             if (id == null)
             {
@@ -34,7 +34,7 @@ namespace RazorPage.Pages.ManageFlower
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public IActionResult OnPostAsync(int? id)
         {
             if (id == null)
             {

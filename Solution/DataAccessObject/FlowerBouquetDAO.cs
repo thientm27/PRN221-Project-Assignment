@@ -30,7 +30,11 @@ namespace DataAccessObject
 
         public List<FlowerBouquet> GetAllFlower()
         {
-            return _context.FlowerBouquets.Where(f => f.FlowerBouquetStatus != 0).ToList();
+            return _context.FlowerBouquets
+                .Include(f => f.Category)
+                .Include(f => f.Supplier)
+                .ToList();
+            // return _context.FlowerBouquets.Where(f => f.FlowerBouquetStatus != 0).ToList();
         }
 
         public void AddFlower(FlowerBouquet flower)
@@ -85,11 +89,15 @@ namespace DataAccessObject
             var existingFlower = _context.FlowerBouquets.Find(flower.FlowerBouquetId);
             if (existingFlower != null)
             {
+                flower.Category = null;
+                flower.Supplier = null;
+                
                 _context.Entry(existingFlower).State = EntityState.Detached;
+                _context.FlowerBouquets.Update(flower);
+                _context.SaveChanges();
             }
-
-            _context.Update(flower);
-            _context.SaveChanges();
+            
+           
         }
 
         public string GetFlowerName(int id)

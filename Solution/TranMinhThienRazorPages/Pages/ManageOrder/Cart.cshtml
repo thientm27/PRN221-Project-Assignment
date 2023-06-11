@@ -1,0 +1,64 @@
+﻿@page
+@model  RazorPage.Pages.ManageOrder.CartModel
+@{
+    Layout = "Shared/_AdminLayout";
+}
+<h1>Customer CART</h1>
+
+<a asp-page="ShopView"> Back To Shop </a>
+<form method="post" asp-page="cart" asp-page-handler="update">
+    <div class="text-center">
+        <input type="submit" value="Update" class="btn btn-primary"/>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart[0].Item.FlowerBouquetName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart[0].Item.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart[0].Item.UnitPrice)
+            </th>
+            <th>Quantity</th>
+            <th> PRICE </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Cart)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item.FlowerBouquetName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item.UnitPrice)
+                </td>
+                <td>
+                    <input type="number" name="quantities" value="@item.Quantity" min="1" style="width: 50px;"/>
+                </td>
+                <td>
+                    $@(item.Item.UnitPrice * item.Quantity)
+                </td>
+                <td>
+                    <a asp-page="cart" asp-page-handler="delete" asp-route-id="@item.Item.FlowerBouquetId"> Remove </a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <div class="text-center">
+        <h2>Total: $@Model.Total </h2>
+    </div>
+</form>
+
+<form method="post" asp-page="cart" asp-page-handler="checkout">
+    <input type="submit" value="Next step" class="btn btn-primary" style="margin: 0 auto"/>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+</form>

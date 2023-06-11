@@ -15,8 +15,7 @@ namespace RazorPage.Pages.ManageOrder
     {
         private readonly IOrderRepository _orderRepository = new OrderRepository();
 
-        [BindProperty]
-        public Order Order { get; set; }
+        [BindProperty] public Order Order { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -26,20 +25,22 @@ namespace RazorPage.Pages.ManageOrder
             }
 
             Order = _orderRepository.GetOrderById((int)id);
-            
+
             if (Order == null)
             {
                 return NotFound();
             }
+
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public IActionResult OnPost(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
+
 
             Order = _orderRepository.GetOrderById((int)id);
 
@@ -47,6 +48,7 @@ namespace RazorPage.Pages.ManageOrder
             {
                 _orderRepository.DeleteOrder((int)id);
             }
+
 
             return RedirectToPage("./Index");
         }

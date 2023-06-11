@@ -19,41 +19,37 @@ namespace RazorPage.Pages.ManageFlower
         private readonly ISupplierRepository supplierRepository = new SupplierRepository();
 
 
-        [BindProperty]
-        public FlowerBouquet FlowerBouquet { get; set; }
+        [BindProperty] public FlowerBouquet FlowerBouquet { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public IActionResult OnGet(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            //FlowerBouquet = await _context.FlowerBouquets
-            //    .Include(f => f.Category)
-            //    .Include(f => f.Supplier).FirstOrDefaultAsync(m => m.FlowerBouquetId == id);
+            
             FlowerBouquet = flowerBouquetRepository.GetFlowerById(id);
 
             if (FlowerBouquet == null)
             {
                 return NotFound();
             }
-              ViewData["CategoryId"] = new SelectList(categoryRepository.GetAllCategory(), "CategoryId", "CategoryName");
-              ViewData["SupplierId"] = new SelectList(supplierRepository.GetAllSupplier(), "SupplierId", "SupplierName");
-               return Page();
+
+            ViewData["CategoryId"] = new SelectList(categoryRepository.GetAllCategory(), "CategoryId", "CategoryName");
+            ViewData["SupplierId"] = new SelectList(supplierRepository.GetAllSupplier(), "SupplierId", "SupplierName");
+            return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // To protect from overposting attacks, enable the spescific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public  IActionResult OnPost()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-
-
+            
             try
             {
                 flowerBouquetRepository.UpdateFlower(FlowerBouquet);
@@ -64,10 +60,7 @@ namespace RazorPage.Pages.ManageFlower
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+                
             }
 
             return RedirectToPage("./Index");
