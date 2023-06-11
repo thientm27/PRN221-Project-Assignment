@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BussinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessObject
 {
@@ -35,21 +36,30 @@ namespace DataAccessObject
 
         public void AddOrderDetails(List<OrderDetail> orderDetails)
         {
+           
             foreach (var orderDetail in orderDetails)
             {
                 var flower = FlowerBouquetDAO.Instance.GetFlowerById(orderDetail.FlowerBouquetId);
-         
+            
                 if (flower.UnitsInStock < orderDetail.Quantity)
                 {
                     throw new Exception("Not enough flower " + flower.FlowerBouquetName + " id: " + flower.FlowerBouquetId);
                 }
+                
+                var flowerx = _context.FlowerBouquets.Find(orderDetail.FlowerBouquetId);
+                _context.Entry(flowerx).State = EntityState.Detached;
+                
                 flower.UnitsInStock -= orderDetail.Quantity;
                 _context.FlowerBouquets.Update(flower);
                 _context.OrderDetails.Add(orderDetail);
+                _context.SaveChanges();
+                
+               
             }
-
+            
             _context.SaveChanges();
         }
+
 
         public void UpdateOrderDetails(List<OrderDetail> orderDetails)
         {

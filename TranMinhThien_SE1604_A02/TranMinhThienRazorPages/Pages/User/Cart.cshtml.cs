@@ -156,7 +156,7 @@ namespace RazorPage.Pages.User
             {
                 _orderRepository.DeleteOrder(orderId);
                 ModelState.AddModelError(String.Empty, "Error when create details");
-                return Page();
+                throw exception;
             }
             
             Cart.Clear();

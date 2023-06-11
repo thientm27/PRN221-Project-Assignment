@@ -42,22 +42,13 @@ namespace DataAccessObject
         {
             var maxId = _context.FlowerBouquets.Max(c => c.FlowerBouquetId);
             flower.FlowerBouquetId = maxId + 1;
-
+            
             _context.FlowerBouquets.Add(flower);
             _context.SaveChanges();
         }
         public FlowerBouquet GetFlowerById(int ?id)
         {
-            var listTmp = _context.FlowerBouquets.Where(item => item.FlowerBouquetId == id).ToList();
-            if (listTmp.Count == 0)
-            {
-                return null;
-            }
-            else
-            {
-                return listTmp[0];
-            }
-    
+            return _context.FlowerBouquets.FirstOrDefault(item => item.FlowerBouquetId == id);
         }
         public void DeleteFlower(int id)
         {
@@ -93,15 +84,18 @@ namespace DataAccessObject
             var existingFlower = _context.FlowerBouquets.Find(flower.FlowerBouquetId);
             if (existingFlower != null)
             {
-                flower.Category = null;
-                flower.Supplier = null;
+                existingFlower.FlowerBouquetName = flower.FlowerBouquetName;
+                existingFlower.FlowerBouquetStatus = 1;
+                existingFlower.UnitPrice = flower.UnitPrice;
+                existingFlower.UnitsInStock = flower.UnitsInStock;
+                existingFlower.Description = flower.Description;
+                existingFlower.CategoryId = flower.CategoryId;
+                existingFlower.SupplierId = flower.SupplierId;
+
                 
-                _context.Entry(existingFlower).State = EntityState.Detached;
-                _context.FlowerBouquets.Update(flower);
+             
                 _context.SaveChanges();
             }
-            
-           
         }
 
         public string GetFlowerName(int id)
