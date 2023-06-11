@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessObject", "DataAcc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "Repositories\Repositories.csproj", "{56E6493C-C27A-4A45-AE8B-19A2DA15F9F3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TranMinhThienWPF", "TranMinhThienWPF\TranMinhThienWPF.csproj", "{73B0E251-BA89-4394-A076-9B1F47EE35EB}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TranMinhThienRazorPages", "TranMinhThienRazorPages\TranMinhThienRazorPages.csproj", "{C4F7768F-85B1-486D-86C8-7E00D1C98895}"
 EndProject
 Global
@@ -31,10 +29,6 @@ Global
 		{56E6493C-C27A-4A45-AE8B-19A2DA15F9F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56E6493C-C27A-4A45-AE8B-19A2DA15F9F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56E6493C-C27A-4A45-AE8B-19A2DA15F9F3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{73B0E251-BA89-4394-A076-9B1F47EE35EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{73B0E251-BA89-4394-A076-9B1F47EE35EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{73B0E251-BA89-4394-A076-9B1F47EE35EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{73B0E251-BA89-4394-A076-9B1F47EE35EB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C4F7768F-85B1-486D-86C8-7E00D1C98895}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C4F7768F-85B1-486D-86C8-7E00D1C98895}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4F7768F-85B1-486D-86C8-7E00D1C98895}.Release|Any CPU.ActiveCfg = Release|Any CPU

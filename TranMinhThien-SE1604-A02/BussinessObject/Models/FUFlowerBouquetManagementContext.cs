@@ -30,7 +30,7 @@ namespace BussinessObject.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var connectString = "server =(local); database = FUFlowerBouquetManagement;uid=sa;pwd=123;";
+                string connectString;
                 using (StreamReader r = new StreamReader("appsettings.json"))
                 {
                     string json = r.ReadToEnd();
