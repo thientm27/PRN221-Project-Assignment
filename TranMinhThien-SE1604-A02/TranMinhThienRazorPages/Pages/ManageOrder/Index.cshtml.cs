@@ -29,13 +29,7 @@ namespace RazorPage.Pages.ManageOrder
             
             Order = _orderRepository.GetAllOrders();
             HttpContext.Session.SetObjectAsJson("cart", null);
-            // foreach (var obj in Order)
-            // {
-            //     if (obj.CustomerId != null)
-            //     {
-            //         obj.Customer = _customerRepository.GetCustomerById((int)obj.CustomerId);
-            //     }
-            // }
+      
 
             return Page();
         }

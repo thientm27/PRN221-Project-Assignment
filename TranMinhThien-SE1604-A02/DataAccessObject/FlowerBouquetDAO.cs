@@ -66,6 +66,9 @@ namespace DataAccessObject
             if (isFlowerInOrder) // have in order --> Update status
             {
                 flower.FlowerBouquetStatus = 0;
+                flower.Category = null;
+                flower.Supplier = null;
+
                 _context.FlowerBouquets.Update(flower);
                 _context.SaveChanges();
             }

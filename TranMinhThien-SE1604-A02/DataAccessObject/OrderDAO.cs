@@ -83,31 +83,35 @@ namespace DataAccessObject
 
         public void DeleteOrder(int id)
         {
-            var order = _context.Orders.Where(o => o.OrderId == id).ToList()[0];
-            if (order.OrderStatus.ToUpper().Trim().Equals("CANCEL") || order.OrderStatus.Trim().ToUpper().Equals("DONE"))
+            var order = _context.Orders
+                .Include(o => o.OrderDetails)
+                .FirstOrDefault(o => o.OrderId == id);
+
+            if (order == null)
             {
+                // Handle the case when the order does not exist
                 return;
             }
-            var orderDetails = _context.OrderDetails.Where(o => o.OrderId == id).ToList();
-            // Not delete, return flower to stock
-            foreach (var orderDetail in orderDetails)
+
+            if (order.OrderStatus.ToUpper().Trim() == "CANCEL" || order.OrderStatus.Trim().ToUpper() == "DONE")
             {
-                
-                var flower = FlowerBouquetDAO.Instance.GetFlowerById(orderDetail.FlowerBouquetId);
+                // Handle the case when the order is already canceled or done
+                return;
+            }
+
+            foreach (var orderDetail in order.OrderDetails)
+            {
+                var flower = _context.FlowerBouquets.Find(orderDetail.FlowerBouquetId);
                 if (flower != null)
                 {
-                    flower.Category = null;
-                    flower.Supplier = null;
                     flower.UnitsInStock += orderDetail.Quantity;
-                    _context.Entry(flower).State = EntityState.Detached;
-                    _context.FlowerBouquets.Update(flower);
-                    _context.SaveChanges();
+                    _context.Entry(flower).State = EntityState.Modified;
                 }
             }
-            order.OrderStatus = "Cancel";
 
-            _context.Orders.Update(order);
+            order.OrderStatus = "CANCEL";
             _context.SaveChanges();
         }
+
     }
 }
